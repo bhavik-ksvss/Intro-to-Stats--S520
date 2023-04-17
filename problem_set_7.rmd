@@ -1,0 +1,152 @@
+---
+title: "Problem Set 7"
+author: "Bhavik Kollipara"
+date: "10/20/2021"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### QUESTION 1
+
+a) 5/59
+
+b) False
+
+c) False
+
+d) False
+
+e) False
+
+### QUESTION 2
+
+a) E[X] = mu = 0.3* -2 + 0.6 * -1 + 0.1*12
+= 0
+
+b) Var[X]
+E[X^2]-(E[X])^2= 16.2
+
+c) E(X)= Population mean = mu = 0
+
+d) n = 100
+variance=16.2/100 = 0.162
+
+e) P(sample mean>0.5) = 1 - P(sample mean $/le$ 0.5)
+```{r}
+1 - pnorm(0.5,mean = 0,sd = sqrt(0.162))
+```
+## QUESTION 3
+
+standard deviation = 30mins
+n=20
+sum of means(in hours) = 100
+sd= standard deviation * (n)^(1/2)
+
+Probability (at least 105 hours)
+
+```{r}
+1 - pnorm(104.99999,100, 0.5*sqrt(20))
+```
+## QUESTION 4
+
+let X be daily fluctations in value stock
+let Y be daily fluctations in growth stock
+Given expectation and variance for each day for value stock and growth stock
+E[X_i] = 0.01
+Var[X_i] = 0.01
+
+E[X_i] = 0
+Var[X_i] = 0.25
+
+n= 400
+=> 
+E[X] = 50 + E[X_1] + E[X_2]+ ..... E[X_400] = 50 + 400 * 0.01 = 54
+Var[X] = Var[X_1] + Var[X_2] + ...... Var[X_400] = 400 * 0.01 = 4
+=>sd[X] = 2
+E[Y] = 50 + E[Y_1] + E[Y_2]+ ..... E[Y_400] = 50 + 400 * 0 = 50
+Var[Y] = Var[Y_1] + Var[Y_2] + ...... Var[Y_400] = 400 * 0.25 = 100
+=> sd[Y] = 10 
+
+a) P(X>50) = 1 - P(X $\le$ 50)
+
+```{r}
+1 - pnorm(50,54,2)
+```
+b) P(Y>50) = 1 - P(Y $\le$ 50)
+
+```{r}
+1 - pnorm(50,50,10)
+```
+c) P(X $\ge$ 70) = 1 - P(X $\le$ 70)
+
+```{r}
+1 - pnorm(70,54,2)
+```
+d) P(Y $\ge$ 70) = 1 - P(Y $\le$ 70)
+```{r}
+1 - pnorm(70,50,10)
+```
+e) lets take Z = Y-X as new Random variable
+E[Z] = E[Y] + E[X] = 0 - 4 = -4
+Var[Z] = Var[Y] + Var[X] = 100 + 4 = 104
+
+P=
+```{r}
+1 - pnorm(0,-4,sqrt(104))
+```
+
+
+
+
+## QUESTION 5
+
+a) P(40 $\le$ X $\le$ 60) is given by
+
+```{r}
+pbinom(60,100,0.5) - pbinom(39,100,0.5)
+```
+b) 
+E(X)= population mean = p = 0.5
+Standard deviation of sample mean = (p(1-p)/n)^(1/2)
+P(0.395 $\le$ X $\le$ 0.605) is given by
+
+```{r}
+pnorm(0.605,0.5,0.05) - pnorm(0.395,0.5,0.05)
+```
+
+
+
+## QUESTION 6
+``` {r}
+household_sizes <- rep(1:7, c(27, 34, 16, 13, 6, 3, 1))
+```
+a) sample_mean=
+```{r}
+sample_mean<- mean(household_sizes)
+sample_mean
+```
+b)
+```{r}
+sd= sd(household_sizes)
+sd
+```
+c) 
+```{r}
+esti_sd_err = sd(household_sizes)/sqrt(100)
+esti_sd_err
+```
+
+d)Approximate probability that the absolute value of the error in a survey of this form and size is less than 0.5 given by
+```{r}
+pnorm(0.5,mean = 0, sd = esti_sd_err) - pnorm(-0.5,mean = 0, sd = esti_sd_err)
+```
+e) P(etween 2 and 3)
+```{r}
+pnorm(3,mean = 2.5, sd = esti_sd_err) - pnorm(2,mean = 2.5, sd = esti_sd_err)
+```
+as probability is approximately equal to 0.9997, we can say that average household size for all U.S. households is between 2 and 3

@@ -1,0 +1,194 @@
+---
+title: "STATS_TAKEHOME_MID2"
+author: "Bhavik Kollipara"
+date: "11/5/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## QUESTION 1 (The 2012 Presidential Election By County)
+
+### 1. Obama Votes Percentage Distribution
+County Votes Table
+```{r}
+
+county_votes <- read.table('countyvote2012.txt', header = TRUE)
+summary(county_votes)
+
+# Calculating Obama Votes Percentage
+county_votes['ObamaVotes_percent'] <- county_votes['OBAMA']/(county_votes['OBAMA']+county_votes['ROMNEY']) *100
+
+head(county_votes)
+```
+
+*Distribution of Obama Votes Percentage across the counties can be given by plottig a density function across the obamavotes_percentage column.
+
+```{r}
+plot(density(county_votes$ObamaVotes_percent))
+```
+*This seems like the data points of ObamaVotes_percent follows as Normal Distribution based on above Density Plot. We canuse qq plots to it.*
+```{r}
+qqnorm(county_votes$ObamaVotes_percent)
+```
+
+*Based on the QQplot, it seems like the obamavotes_percent distribution follow approximately normal. distribution.*
+
+To get summary statistics of the ObamaVotes_percent.
+```{r}
+summary(county_votes$ObamaVotes_percent)
+```
+*From the above statistics, we can say that the distribution of Obama_vote_percent have a Mean 0f 40.603% with standard deviation of 17.044%. Maximum percentage of Obama’s votes is 93.984% whereas minimum is 9.764%.*
+
+### 2. Counties Won ( Obama vs Romney)
+
+```{r}
+county_votes['votes'] <- as.integer(county_votes['OBAMA']>county_votes['ROMNEY'])
+
+Obama_won <- sum(county_votes['votes']==TRUE)
+
+Obama_won
+
+Romney_won= 100-Obama_won
+
+Romney_won
+
+```
+*27 counties are won BY OBAMA*
+*73 Counties are won BY ROMNEY*
+
+Who won more counties among the whole population counties ?
+
+*Let's take obama_prop= obama/counties won by obama + counties won by romney and romney_prop= romney/counties won by obama + counties won by romney.
+
+*Null Hypothesis (H0): obama_prop<=0.5, Alternate Hypothesis(H1): obama_prop > 0.5*
+
+*Let's do Binomial test as the no of counties(votes) won are boolean(win or lose). (Right-tailed test)
+
+* Here we assume that the sample is an IID sample.
+
+```{r}
+
+p= 1-pbinom(27-1,100,0.5)
+
+p
+```
+*Based on the p-value=0.999, we can say the data is consistent with the NULL Hypothesis and thus we accept it.we have higher evidence that obama's vote proportion is less than 0.5*
+
+
+Confidence Interval of 99% for the proportion statistic.
+
+```{r}
+prop <- 0.27
+q<- qnorm(0.995)
+q
+#lower limit
+prop - q*sqrt(prop*(1-prop)/100)
+
+# upper limit
+prop + q*sqrt(prop*(1-prop)/100)
+```
+
+*The CI here is (0.15,0.38) which gives us the extra evidence that the hypothesis choosen is true. That is the proportion of Obama votes is less than 0.5*
+
+
+### 3. More votes per County. (OBAMA VS ROMNEY)
+
+```{r}
+muo=mean(county_votes$OBAMA)
+mur=mean(county_votes$ROMNEY)
+muo
+mur
+```
+ *Based on this (muo>mur), Obama won more votes per county*
+ 
+ *Here we have a sample of 100, which is large enough to consider Central-Limit Theorm to perform the test.*
+ 
+ *Let's take H0: muo-mur<=0, H1: muo-mur>0*
+ 
+```{r}
+diff <- county_votes$OBAMA-county_votes$ROMNEY
+mu <- mean(diff)
+mu
+n <- length(diff)
+n
+q<-qnorm(0.975)
+q
+
+se <- sd(diff)
+se
+
+p <- 1-pnorm(mu,0,se/sqrt(n))
+p
+#lower-limt
+mu-1.96*se/sqrt(n)
+
+#upper-limit
+mu+1.96*se/sqrt(n)
+
+```
+*Here p-value=0.15, which mean the data is consistent with the Null Hypothesis (Not statistically significant to reject H0)*
+
+*CI of 95% is (-3316,10772) which includes 0, so we don't have strong evidence to specify who won more votes over the whole population.*
+
+*Though romney won more counties from the previous question, we can't say that one gets more votes than the other*
+
+## QUESTION 2. (Flag Priming)
+
+### 1. MANYLABS_US
+
+```{r}
+#read data
+many_labs <- read.table('manylabs.txt', header=TRUE)
+# data points of only us people
+many_labs_us <-many_labs[many_labs$us_or_international==0,]
+many_labs_us <-many_labs_us[,c('flagdv','flagGroup')]
+many_labs_us <-na.omit(many_labs_us)
+head(many_labs_us)
+```
+**Informative graphs of the Data**
+
+```{r}
+library(ggplot2)
+#Histogram
+ggplot(many_labs_us, aes(x=flagdv))+geom_histogram()+facet_grid(flagGroup~.)
+  
+```
+```{r}
+#BOX-Plots
+ggplot(many_labs_us, aes(x=flagdv))+geom_density()+facet_grid(flagGroup~.)
+```
+  
+### 2. Populations and parameters of interest
+
+Here the two populations we define are the participants within the flag-prime(flagGroup=1) condition and the others within the Control Group (flagGroup=0).
+
+The parameters of interest are the mean of flagdv values of each population. Let the mean of flag-prime group is $mu1$ and mean of control group is $mu0$.
+
+### 3. Hypothesis for one-tailed test
+
+Let $delta$ = $mu0$-$mu1$
+
+Null Hypothesis (H0) : $mu0$-$mu1$>=0  and Alternate Hypothesis(H1): $mu0$-$mu1$<0
+
+### 4. Statistic test
+
+As we deal with a very large sample here, we can assume the population distribution to be Normal. And because it's a two sample one-tailed test, we can use *Welch's T-test* based on our assumptions.
+
+### 5. Welch's t-test
+
+```{r}
+t.test(data=many_labs_us,flagdv~flagGroup,alt='less')
+```
+### 6. 99.5% Confidence Interval
+
+```{r}
+t.test(data=many_labs_us,flagdv~flagGroup,conf.level=0.995)
+```
+
+### 7. Conclusion
+
+The hypothesised effect is not replicated with the data. the p-value=0.1898 which is not statistically significant and thus we have little evidence that the participants in the treatement group are more conservative compared to the participants in the control group. the CI also includes 0 which say it has support for both the Control and flag-prime treatment group.
+

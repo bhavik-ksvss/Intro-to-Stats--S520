@@ -1,0 +1,194 @@
+---
+title: "Problem Set 8"
+author: "Bhavik Kollipara"
+date: "10/28/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Question 1
+
+n = 963
+mu = 121.1
+sample sd= 17.6
+
+a)CI = 80%
+ 1-alpha =0.8
+ alpha = 0.2
+ 1 - alpha/2 = 0.9
+
+```{r}
+n<- 963
+mu<- 121.1
+ssd<- 17.6
+se<- ssd/sqrt(n)
+q<-qnorm(0.9)
+#upper limit
+mu + q*se
+#lower limit
+mu - q*se
+```
+b)CI= 95%
+ 1-alpha =0.95
+ alpha = 0.1
+ 1 - alpha/2 = 0.975
+
+```{r}
+q<-qnorm(0.975)
+#upper limit
+mu + q*se
+#lower limit
+mu - q*se
+```
+
+c)CI= 99%
+ 1-alpha =0.99
+ alpha = 0.01
+ 1 - alpha/2 = 0.995
+
+```{r}
+q<-qnorm(0.995)
+#upper limit
+mu + q*se
+#lower limit
+mu - q*se
+```
+
+### Question 2
+
+
+Xbar = 0.58
+n = 1009
+
+a)
+CI= 95%
+ 1-alpha =0.95
+ alpha = 0.05
+ 1 - alpha/2 = 0.975
+
+```{r}
+n<- 1009
+xbar<- 0.58
+sd<- sqrt(xbar*(1-xbar)/n)
+q<-qnorm(.975)
+#upper limit
+xbar + q*sd
+#lower limit
+xbar - q*sd
+```
+b) 
+
+2* qnorm(0.975) * (xbar*(1-xbar)/n)^(1/2)= 0.02
+=2* 1.96 * ((0.58*0.42/n)^(1/2)) = 0.02
+=(0.2436/n)^(1/2) = 0.0051
+n=9358
+
+### Question 3
+a)
+237/720 questions are right.
+P(question correct) = 0.25
+e(x)= 720 * 0.25 = 180
+
+b)  1 - pbinom(236, 720, 0.25)
+
+c)
+“The significance probability is **small**. This means a number of correct answers this high would be **surprising** if the students were just randomly guessing. The data is thus **highly incompatible** with the null hypothesis. We have **strong evidence** in favor of the alternative hypothesis that students are doing better than random guessing."
+
+
+### Question 4
+a) Given
+H0 : p = 1/6 vs H1 : p < 1/6.
+getting 15 sixes in 100 rolls.
+
+p=
+```{r}
+pbinom(15,100,1/6)
+```
+
+
+b)
+H0 : p = 32/663 vs H1 : p < 32/663. 
+
+p=
+```{r}
+pbinom(59,1000,32/663)
+```
+
+c)
+H0 : p = 0.5
+two-tailed test
+
+p=
+```{r}
+#left test
+pbinom(1150,2215,0.5)
+#right test
+1 - pbinom(1149,2215,0.5)
+#two tailed test (2 times of smaller p-values of right and left tests)
+2*(1 - pbinom(1149,2215,0.5))
+```
+p=0.07 is NOT statistically significant. Therefore, we cannot reject the null hypothesis.
+
+d)
+H0 : p = 0.25
+H1 : p > 0.25
+
+p=
+```{r}
+1 - pbinom(236,720,0.25)
+```
+as p is statistically significant, we can reject the null hypothesis. 
+
+### Question 5
+```{r}
+ANESpilot <- read.table("ANESpilot.txt", header = TRUE)
+```
+a) 
+H0 : p = 0.5
+H1 : p != 0.5(p not equal to 0.5)
+
+b)n = 1163 and p =0.5
+
+c)
+Clinton higher than Trump=
+```{r}
+sum(ANESpilot$ClintonFT > ANESpilot$TrumpFT)
+```
+
+Trump higher than Clinton=
+```{r}
+sum(ANESpilot$ClintonFT < ANESpilot$TrumpFT)
+```
+
+d)
+
+```{r}
+#left test
+pbinom(623,1163,0.5)
+#right test
+1 - pbinom(622,1163,0.5)
+#two tailed test (2 times of smaller p-values of right and left tests)
+2*(1 - pbinom(622,1163,0.5))
+```
+
+e) as p=0.016 which is statistically significant. That is we can reject the null hypothesis. 
+
+
+CI=
+```{r}
+R <- ANESpilot$ClintonFT
+S <- ANESpilot$TrumpFT
+Q <- R - S
+n <- 1163
+mu<- mean(Q)
+std <- sd(Q)
+se <- std/sqrt(n)
+q<- qnorm(0.975)
+mu
+mu - q*se
+mu + q*se
+```
+Based on this, we can say that direction of bias is towards Clinton.

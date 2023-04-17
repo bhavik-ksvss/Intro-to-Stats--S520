@@ -1,0 +1,65 @@
+---
+title: "Normal QQ plots"
+author: "S350/520"
+date: "9/29/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Normal QQ plots
+
+```{r}
+set.seed(350)
+x <- rnorm(50, 0, 1)
+```
+
+```{r}
+sort(x)
+qnorm(seq(0.01, 0.99, 0.02))
+plot(qnorm(seq(0.01, 0.99, 0.02)), sort(x))
+```
+
+```{r}
+x1 <- rnorm(50, mean = 10, sd = 20)
+plot(qnorm(seq(0.01, 0.99, 0.02)), sort(x1))
+```
+
+```{r}
+qqnorm(x1)
+```
+
+```{r}
+qqnorm(rnorm(50, mean = 10, sd = 20), main = "Normal data")
+```
+
+```{r}
+qqnorm(rexp(50), main = "Exponential data")
+```
+
+
+```{r}
+library(lattice)
+library(ggplot2)
+ggplot(singer, aes(sample = height)) + stat_qq()
+```
+
+```{r}
+ggplot(singer, aes(sample = height)) + stat_qq() +
+  facet_wrap(~voice.part, ncol = 4)
+```
+
+```{r}
+qqnorm(rnorm(200), main = "Normal data")
+qqnorm(runif(200), main = "Uniform data")
+```
+
+
+```{r}
+qqnorm(rnorm(10), main = "Normal data")
+qqnorm(runif(10), main = "Uniform data")
+```
+
+

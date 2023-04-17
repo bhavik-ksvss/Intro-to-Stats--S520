@@ -1,0 +1,101 @@
+---
+title: "Take_Home_Final_Sai_Giridhar"
+author: "Sai Giridhar Rao Allada"
+date: "12/16/2021"
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Q1
+```{r}
+IPLpoints <- read.csv("IPLpoints.csv")
+IPLpoints2 <- read.csv("IPLpoints2.csv")
+names(IPLpoints)[1]<-'Year'
+IPL14 <- subset(IPLpoints, Year %in% c(2008:2011, 2014:2021))
+p.win<-676/1372
+```
+## a
+```{r}
+expected<-98 * dbinom(0:14, 14, p.win)
+
+actual_expected<-c(sum(expected[1:5]))
+actual_expected<-c(actual_expected,expected[6:10])
+actual_expected<-c(actual_expected,sum(expected[11:15]))
+cat("Expected wins for each category:",actual_expected)
+cat("\nVerifying if the Sum of all wins is 98:",sum(actual_expected))
+```
+## b
+```{r}
+possiblewins<-c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14)
+observed<-c()
+for (w in possiblewins){
+  observed<-c(observed,sum(IPL14$Wins == w))
+  #cat("\n Observed wins if total wins is ",w,":",sum(IPL14$Wins == w))
+}
+actual_observed<-c(sum(observed[1:5]))
+actual_observed<-c(actual_observed,observed[6:10])
+actual_observed<-c(actual_observed,sum(observed[11:15]))
+cat("Observed wins for each category:",actual_observed)
+```
+
+## c
+```{r}
+actual_observed
+X2 <- sum((actual_observed - actual_expected)^2 / actual_expected)
+cat("Pearson's Chi Squared statistic:", X2)
+cat("P-Value:",1 - pchisq(X2, df=6))
+```
+
+## d
+The IPL is not completely random as there are strong teams and weak teams. The large pvalue confirms the null hypothesis but does not prove that the game is completely random. Some teams tend to perform better tha others.
+
+# Q2
+```{r}
+library(ggplot2)
+temp=IPLpoints[IPLpoints$NZCoach==1,]
+temp
+ggplot(temp, aes(sample = temp$AdjPoints)) + stat_qq() + stat_qq_line()
+```
+The points are not perfectly normal as seen in the above plot but are good enough to go ahead with hypothesis test.
+```{r}
+t.test(temp$AdjPoints,mu=14,alternative = "greater")
+```
+We perform a right tailed t-test to confirm our hypothesis that the Expected value of AdjPoints with a New Zealender coach to be greater than 14 hence why we consider the the null hypothesis to be less than or equal to 14. A low P-value of 0.03188 now proves that we can reject the null hypothesis. 95 \% confidence interval of $\mu$ is [14.1619,Inf].
+
+# Q3
+```{r}
+IPLBig10 <- subset(IPLpoints, Team %in% c("CSK", "DC", "KKR", "HDC", "MI",
+"PBKS", "PWI", "RCB", "RR", "SRH"))
+iplm<-lm(IPLBig10$AdjPoints~IPLBig10$Team)
+anova(iplm)
+```
+The analysis of variance tells us that the performance of the IPL teams are all not similar. Here we assume the null hypothesis to be that all the teams have similar AdjPoints and the alternative to be that they don't. We can reject the null hypothesis due to the really low p-value. The follow up analysis which could be done could include checking anova between different possible subsets of teams to distinguish the teams that are really good and those particularly aren't.
+## Q4
+We assume that the distribution is normal and is of a sufficient sample size in Q2 in order to perform the t-test. In Q3 we assume that each sample is independent of the other which might not be the case exactly. The different samples of teams should also have the same variance of $\sigma^2$. The sample isn't large enough either.
+# Q5
+## a
+```{r}
+IPL_pred <- lm(IPLpoints2$AdjPoints2~IPLpoints2$AdjPoints1)
+summary(IPL_pred)
+```
+$E[X]= slope \times AdjPointsIn2021 + Intercept $ \\
+Hence $E[SRH] = 0.11861 \times 6 + 12.36230 = $
+```{r}
+pred=0.11861*6 +12.3620
+pred
+```
+## b
+```{r}
+library(broom)
+lmdf <- augment(IPL_pred)
+ggplot(lmdf, aes(IPLpoints2$AdjPoints1, .resid)) + geom_point() + geom_smooth()
+```
+It is not linear as the line should be horizontal.
+Our datapoints arent exactly independent as one team's loss effect the other team's win.

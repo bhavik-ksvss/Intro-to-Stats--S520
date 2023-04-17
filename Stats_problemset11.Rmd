@@ -1,0 +1,158 @@
+---
+title: "stats_problemset11"
+author: "Bhavik Kollipara"
+date: "12/2/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Question 1 (Guessthecorrelation game)
+
+UPLOADED IMAGE IN CANVAS.
+ 
+### Question 2 (The psychologists Daniel Kahneman and Amos Tversky described the following situation)
+
+Here the idea seems very naive, similar performance cannot be expected all the time.They were not looking at any specific variables to draw the conclusion.Also Here, to show cause and effect, we need: 1) An experiment 2) A strong Theory 3) A good reason to think that there are no confounding variables Here, there is not a single condition getting satisfied.
+
+### Question 3 (Jack & Jill)
+Total Number of students = 35
+Number of Mid terms = 2
+Given 33 students took both the tests and 
+scored average of 75 points in first test with standard deviation 10 points
+scored average of 64 points in first test with standard deviation 12 points
+correlation coefficient r = 0.5
+
+```{r}
+n <- 35
+
+n1 <- 34#number of students who took first test including Jack
+n2 <- 34#number of students who took second test inclucing Jill
+
+mu1 <- 75 #mean of 1st test
+sd1 <- 10 #SD of 1st test
+
+mu2<- 64 # mean of 2nd test
+sd2<-12 #SD of 2nd test
+
+r = 0.5 # correlation coefficient
+```
+
+*a.)*
+
+Jill scored 80 in test 1 and we should give the same percentile score in Test 2 as well.
+
+So Let's Calculate for Jill's Test 2 score
+
+```{r}
+Jill_test1<-80
+
+slope<- r * (sd2/sd1)
+
+int <- mu2 - (slope*mu1)
+
+Estimate_test2 = int + slope * Jill_test1
+
+Estimate_test2
+```
+So Based on the above finding, the professor should give 67 marks instead of 80 for Jill's Test 2.
+
+*b.)*
+
+Now, Let's Calculate the score for Jack's Test1
+
+```{r}
+Jack_test2<-76
+
+slope<- r * (sd1/sd2)
+
+int<- mu1 - (slope*mu2)
+
+Estimate_test1<- int + slope * Jack_test2
+
+Estimate_test1
+```
+
+So Based on the above finding, the professor should give 80 marks rather than 1 SD more.
+
+### Question 4 (A Major League Baseball team )
+
+Games = 162
+Teams = 30
+mean 81 & standard deviation 11.7
+Correlation r=0.54
+
+a) If it needs to be according to what the baseball executive is expecting, which is same no of wins in 2015 as 2014, the correlation needs to be 1, but here the correlation r=0.54. We can explain this to the executive as that usually the wins tend to be regress towards the mean in the real-world scenario, but he made very naive assumptions so the prediction is likely too high.
+
+b) 
+
+```{r}
+r<-0.54
+
+#no of wins by 2014 was from its mean
+sd_2014<-(98-81)/11.7
+sd_2014
+
+#z
+z<-r*sd_2014
+z
+
+wins_2015 <- 81+z*11.7
+
+wins_2015
+```
+
+So, Here Based on the above finding, the number of wins expected in 2015 are ~*90*.
+
+c)
+The executive suspects the predictions are too low, because in every full season since 1961, at least one team has won at least 96 games. The regression is calculated by regressing the values towards the mean and usually that is the case in sports as teams who win 96 games one season is expected to win less than that and teams who win less games than average, win more games next season in general.Also the number of variables he considered for this conclusion is just 1 which doesn't always give good predictions all the time.
+
+
+### Question 5 (US Adults Heights and Weights)
+
+```{r}
+us_adults <- read.table('adults.txt',header=TRUE)
+summary(us_adults)
+```
+
+*a.)*
+```{r}
+library(ggplot2)
+
+ggplot(us_adults, aes(x = Height, y = Weight)) + geom_point() +geom_smooth(method = "lm")
+```
+
+*b.)*
+```{r}
+ggplot(us_adults, aes(y = Height, x = Weight)) + geom_point() +geom_smooth(method = "lm")
+```
+
+*c.)*
+```{r}
+
+slope <- cor(us_adults$Height, log(us_adults$Weight)) * sd(log(us_adults$Weight)) / sd(us_adults$Height)
+
+intercept <- mean(log(us_adults$Weight)) - slope * mean(us_adults$Height)
+
+predict_180 <- intercept + 180 * slope
+
+print(predict_180)
+
+exp(predict_180)
+```
+*d.)*
+```{r}
+slope <- cor(us_adults$Height, log(us_adults$Weight)) * sd(us_adults$Height)/ sd(log(us_adults$Weight)) 
+
+intercept <- mean(us_adults$Height) - slope * mean(log(us_adults$Weight))
+
+predict_height <- intercept + predict_180 * slope
+
+print(predict_height)
+```
+*e.)*
+
+While we are predicting Weight using Height,where we are trying to fit the data to minimize the square of distance of points of heights. Thus, we get different result.
+

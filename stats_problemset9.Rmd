@@ -1,0 +1,253 @@
+---
+title: "stats_problemset9 By Bhavik kollipara"
+
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Question 1. 
+a) As we only want to know the effect of glycemic index when dates eaten with or without coffee, taken two samples from same population and each are dependent on each other. we can analyze this data based on one-sample t-test.
+
+b) Given n=10, 
+
+H0=> mu=0. H1=> mu!=0
+```{r}
+
+n<-10
+
+mu1<-53
+mu2<-41.5
+
+sd1<-19
+sd2<-17
+
+xbar <- 11.5
+
+sdbar <- 21
+
+t=(xbar-0)/(sdbar/sqrt(n))
+t
+
+
+```
+two-tailed t-test
+
+```{r}
+p=2*(1-pt(t,df=9))
+p
+```
+
+t-test= 1.73, p-value= 0.117
+
+c)    CI of 95%
+```{r}
+q <- qt(0.975,df=9)
+q
+#lower-limit
+xbar-q*sdbar/sqrt(n)
+
+#upper-limit
+xbar+q*sdbar/sqrt(n)
+```
+
+CI interval is -3.522,26.5225
+
+d)the p-value is greater than 0.05, which is 0.117.we can't reject NULL Hypothesis as the CI includes both values support with and without coffee.
+
+
+### Question 2.
+
+a) As the sample is small, we would use t-distribution as it also accounts for the uncertainity in sample standard error.
+
+b) 
+df=11.6
+q= qt(.9765,df=11.2)= 2.187
+CI for 95%
+
+```{r}
+xbar<- 68.5
+ybar<- 65.5
+
+xsd<-3
+ysd<-2.5
+
+n1<- 7
+n2<- 7
+
+delta <- 68.5-65.5
+
+q<-qt(0.975,df=11.26)
+
+#lower limit
+delta - q*sqrt((xsd**2/n1)+(ysd**2/n2))
+
+#higher limit
+delta + q*sqrt((xsd**2/n1)+(ysd**2/n2))
+```
+CI Interval is -0.24,6.24
+
+c) as the CI interval do contain 0 and it does mean sometimes it's 0 and we can conclude that there is no difference between the average height of men and women at the university.
+
+### Question 3.
+
+*1*
+
+a. Experimental units are the people in both TYPE A&B who are characterized by urgency,aggresion,ambition and non-competitive, less hurried and more relaxed.
+
+b. Experimental Units are drawn from 2 populations as the above mentioned TYPE A & TYPE B people with respective characteristics.20 units were drawn from each population.This can be considered as 2-sample problem as the units are drawn from 2 independent samples.
+
+c. A single measurement is taken from each unit which is the cholestrol level.
+
+d. as this is a 2-sample problem, the parameter of interest is delta. 
+   delta=(muA-muB). muA and muB are means from TYPE A&B respectively.
+   
+e. H0= DELTA<=0 (Null hypothesis), H1= DELTA>0 (Alternate Hypothesis)
+
+*2*
+
+```{r}
+TypeA <- c(233,291,312,250,246,197,268,224,239,239,254,276,234,181,248,252,202,218,212,325)
+TypeB <- c(344,185,263,246,224,212,188,250,148,169,226,175,242,252,153,183,137,202,194,213)
+
+qqnorm(TypeA)
+
+qqnorm(TypeB)
+
+```
+From the above plots the two samples seem approximately drwan from a normal distribution and As there were no horrible outliers,we can assume it as they are drwan from normal distribution.
+
+*3*
+
+p-value and CI OF 90%
+
+```{r}
+xbar<- mean(TypeA)
+ybar<- mean(TypeB)
+
+sa<-sd(TypeA)
+sb<-sd(TypeB)
+
+n1<- length(TypeA)
+n2<- length(TypeB)
+
+delta<- xbar - ybar
+
+t <- (xbar-ybar)/sqrt((sa**2/n1)+(sb**2/n2))
+t
+
+df<- ((sa**2/n1)+(sb**2/n2))**2/((((sa**2/n1)**2)/(n1-1)) + (((sb**2/n2)**2)/(n2-1)))
+df
+
+p=1-pt(t,df)
+p
+
+q<-qt(0.95,df=df)
+#lower limit
+delta - q*sqrt((sa**2/n1)+(sb**2/n2))
+
+#upper limit
+delta + q*sqrt((sa**2/n1)+(sb**2/n2))
+```
+As the p-value is 0.007, which is very less, we can reject Null Hypothesis.
+CI of 90% interval is (11.84,57.65).
+
+### Question 4
+
+*1*
+
+```{r}
+
+normal<- c(4.1,6.3,7.8,8.5,8.9,10.4,11.5,12.0,13.8,17.6,24.3,37.2)
+diabetic<- c(11.5,12.1,16.1,17.8,24.0,28.8,33.9,40.7,51.3,56.2,61.7,69.2)
+             
+plot(density(normal))
+plot(density(diabetic))
+```
+From the above density plots of both normal data and diabetic data, we can say clearly that they are not symmetric.
+
+*2*
+
+```{r}
+# Logarithmic transformation to make them symmetric
+par(mfrow= c(1,2))
+plot(density(log(normal)), main = 'Normal data ,log tansformation')
+plot(density(log(diabetic)), main = 'Diabetic data, log tansformation')
+
+```
+
+
+```{r}
+
+#sqrt transformation to make it symmetric
+par(mfrow= c(1,2))
+plot(density(sqrt(normal)), main = 'Normal data,sqrt tansformation')
+plot(density(sqrt(diabetic)), main = 'Diabetic data,sqrt tansformation')
+
+```
+
+From the above two transformations, I prefer the log as that is more symmetric compared to sqrt.
+
+*3*
+```{r}
+par(mfrow= c(1,2))
+qqnorm(log(normal))
+
+qqnorm(log(diabetic))
+```
+
+```{r}
+par(mfrow= c(1,2))
+qqnorm(sqrt(normal))
+
+qqnorm(sqrt(diabetic))
+```
+From the qq-plots above, both transformations seem approximately Normal.
+
+*4*
+
+AS I prefer log transformation from the above,
+Let delta=mean(log(diabetic))-mean(log(normal))
+
+h0= delta <=0, h1= delta >0
+
+```{r}
+
+n_log<- log(normal)
+d_log<-log(diabetic)
+
+nlog_mean<- mean(n_log)
+dlog_mean<- mean(d_log)
+
+n1<- length(n_log)
+n2<-length(d_log)
+
+sl<- sd(n_log)
+sd<- sd(d_log)
+
+delta<- dlog_mean - nlog_mean
+
+t<- (delta)/sqrt((sl**2/n1)+(sd**2/n2))
+t
+
+df<- ((sl**2/n1)+(sd**2/n2))**2/((((sl**2/n1)**2)/(n1-1)) + (((sd**2/n2)**2)/(n2-1)))
+df
+
+p=1-pt(t,df)
+p
+
+# CI for 95%
+
+q<-qt(0.975,df=df)
+q
+#lower limit
+exp(delta - q*sqrt((sl**2/n1)+(sd**2/n2)))
+
+#upper limit
+exp(delta + q*sqrt((sl**2/n1)+(sd**2/n2)))
+
+```
+
+as the p-value 0.0004 is very less, we reject null hypothesis. and the claim made by researchers is true, which is supported by CI too as it does not contain 0.

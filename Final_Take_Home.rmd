@@ -1,0 +1,209 @@
+---
+title: "Final Take Home"
+author: "Sai Charan"
+date: "12/14/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+### Reading the data
+```{r}
+ipl_points<- read.csv('IPLpoints.csv')
+ipl_points2<- read.csv('IPLpoints2.csv')
+```
+
+## Question 1
+```{r}
+IPL14 <- subset(ipl_points, ï..Year %in% c(2008:2011, 2014:2021))
+```
+### a)
+```{r}
+p <- 676/1372
+probabilities<- c(sum(dbinom(0:4,14,p)),dbinom(5:10,14,p),sum(dbinom(11:14,14,p)))
+expected<- 98 * probabilities
+sum(expected)
+expected
+
+```
+
+### b)
+```{r}
+sum_wins_0_4 <- length(IPL14['Wins'][IPL14['Wins']< 5])
+sum_wins_5 <- length(IPL14['Wins'][IPL14['Wins']== 5])
+sum_wins_6 <- length(IPL14['Wins'][IPL14['Wins']== 6])
+sum_wins_7 <- length(IPL14['Wins'][IPL14['Wins']== 7])
+sum_wins_8 <- length(IPL14['Wins'][IPL14['Wins']== 8])
+sum_wins_9 <- length(IPL14['Wins'][IPL14['Wins']== 9])
+sum_wins_10 <- length(IPL14['Wins'][IPL14['Wins']== 10])
+sum_wins_10_14<- length(IPL14['Wins'][IPL14['Wins'] > 10])
+
+observed<- c(sum_wins_0_4,sum_wins_5,sum_wins_6,sum_wins_7,sum_wins_8,sum_wins_9,sum_wins_10,sum_wins_10_14)
+observed
+```
+
+c)
+```{r}
+df = length(expected)-1
+X2<- sum((observed-expected)**2/expected)
+X2
+1-pchisq(X2,df=df)
+```
+
+d) The P-value is NOT small therefore we can reject null hypotheses that implies expected wins and observed wins are not following the same distribution. However, this does not prove that the IPL is completely random because there are difference in performance of the teams for a given year. Performance depends on auction of players and there forms. There might be 2 or more teams have very bad season. This effects the distribution of the number of wins.
+
+## Question 2
+Null Hypothesis: Adj points with nz coaches = 14
+Alternative Hypothesis : Adj points with nz coaches > 14
+right tailed test
+
+a)here we are performing t-test as sample is small
+```{r}
+Adj_pt_nz<- ipl_points$AdjPoints[ipl_points$NZCoach == 1]
+mu <- mean(Adj_pt_nz)
+s<-sd(Adj_pt_nz)
+n<- length(Adj_pt_nz)
+df = n-1
+t.stat<- (mu - 14)/(s/sqrt(n))
+1-pt(t.stat,df=df)
+```
+
+b)
+
+```{r}
+qqnorm(Adj_pt_nz)
+```
+For t-test we need to check whether the data is normal or not. The above qqplot looks approximately normal.
+
+c)
+Our P-Value(0.031) is small so we can reject the null hypotheses of Adj points of teams having new zealand coaches will be 14. Our P-Value favors Alternative hypotheses of Adj points of teams having new zealand coaches will be greater than 14.
+
+Calculating 95% Confidence interval
+```{r}
+n<-length(Adj_pt_nz)
+xbar<- mean(Adj_pt_nz)
+std<- sd(Adj_pt_nz)
+se<- std/sqrt(n)
+q<-qt(0.975,df=n-1)
+#Lower Limit
+xbar- (q*se)
+#Upper Limit
+xbar + (q*se)
+```
+95% Confidence interval for mu is (13.91,16.81)
+## Question 3
+```{r}
+IPLBig10 <- subset(ipl_points, Team %in% c("CSK", "DC", "KKR", "HDC", "MI",
+"PBKS", "PWI", "RCB", "RR", "SRH"))
+
+anova(lm(AdjPoints ~ Team, data = IPLBig10))
+```
+a)
+Analysis of Variance(ANOVA) checks/tells/tests whether the means of all categories are equal or not.
+
+b)
+Null Hypotheses:- H0: means of AdjPoints for all the teams are equal
+Alternative Hypotheses:- H1: means of AdjPoints for all the teams are NOT equal
+Our P-value is very small and F-value is also greater than 2. Therefore we can reject the null hypotheses of teams having same mean of AdjPoints
+
+c)
+Analysis of Variance(ANOVA) tests tell that mean AdjPoints for at least one team is not equal to mean of AdjPoints of at least one another team in IPL. BUT we don't know whether how many teams have unequal means of Adjpoints. There are 10 teams(categories) in our case. We need to do pairwise Welch's test Or We can do Bonferroni corrections and doing pairwise.t.test.
+
+
+## Question 4
+Independence. It is because, a team winning a game means another team losing a game. 
+
+## Question 5
+a)
+
+
+Fit a LM to predict AdjPoints2 from AdjPoints using the ipl_points2 data frame:
+
+```{r}
+points_srh<- ipl_points2 
+points_srh.lm <- lm(points_srh$AdjPoints2 ~ points_srh$AdjPoints1, data = points_srh)
+points_srh.lm
+```
+
+The least squares regression line says that predicted points for next year is 12.36 + 0.1186 * (AdjPoints1).
+Prediction of points for SRH team for the year 2022 is 
+12.36 + 0.1186 * (AdjPoints1)
+= 12.36 + 0.1186 * 6
+= 13.07
+approximating to 13.
+Kane prediction of winning 14 games is closer to the calculated wins.
+```{r}
+summary(points_srh.lm)
+```
+Linear regression line equation will be 12.36 + 0.1186 * (AdjPoints1) + error
+where is error is distributed normally with 0 mean and (3.783^2) variance 
+R-squared values is very low that implies variance is explained in the model is very less.
+
+This is a poor model(poor predictability). 
+For exmaple, AdjPoints1 can take maximum of 28 points(14 wins). The maximum wins will be 12.36 + 0.1186* 28 = 15.6 and minimum it can predict is 12.36(AdjPoints1 = 0)
+Max and Min are (12.36,15.6)
+That implies all the time it will predict between 12.36 and 15.6 no matter the input. Thus we can say that this is a poor model 
+
+b)
+*Checking assumptions*
+
+### Linearity
+
+```{r}
+library(ggplot2)
+ggplot(points_srh, aes(x = points_srh$AdjPoints1, y = points_srh$AdjPoints2)) + geom_point() +
+  geom_smooth()
+```
+
+The smooth is not even close to straight line. This might be because we have very less data to plot. We can do transformation and see whether we can get linear relationship.
+
+with a log transformation (or transformations):
+
+```{r}
+ggplot(points_srh, aes(x = points_srh$AdjPoints1, y = points_srh$AdjPoints2)) + geom_point() +
+  geom_smooth() + scale_y_log10()
+```
+
+even after the transformation, the smooth is not close to straight line.
+So, the data is not completely linear
+
+Now we will look at the residuals.
+```{r}
+library(broom)
+points_srh.lm.df <- augment(points_srh.lm)
+```
+
+Plot the residuals against AdjPoints1. Are they randomly scattered about the horizontal zero line?
+
+```{r}
+ggplot(points_srh.lm.df, aes(x = points_srh$AdjPoints1, y = .resid)) +
+  geom_point() + geom_smooth()
+```
+
+There's a nonlinearity we haven't accounted for.
+
+### Independence
+
+This is hard to check from data--it mostly depend on how your data was collected.
+
+### Equal variance of errors
+
+Plot the *absolute* residuals against AdjPoints1. Does the size of the absolute residuals look approximately constant?
+
+```{r}
+ggplot(points_srh.lm.df, aes(x = points_srh$AdjPoints1, y = abs(.resid))) +
+  geom_point() + geom_smooth()
+```
+The smooth is not a straight line. Look like residuals bigger at extremes of AdjPoints1. This violates the equal variance(homoskedasticity) assumption. So the inference we got from "summary(points_srh.lm)" is not exactly correct.
+
+### Normality
+
+Do a QQ plot of the residuals to check if they're normal. If they are, we can do probabilistic prediction.
+
+```{r}
+qqnorm(residuals(points_srh.lm))
+```
+We can consider the above plot of residuals` to be normal approximately.

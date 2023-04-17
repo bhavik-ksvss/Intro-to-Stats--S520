@@ -1,0 +1,29 @@
+---
+title: "urn model tickets"
+author: "Bhavik Kollipara"
+date: "10/13/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+a) urn_model function
+
+```{r}
+urn.model <- function(tickets) {
+  s <-sample(tickets,size=40,replace =TRUE)
+  return( sum(s) )
+}
+
+tickets<-c(1,1,1,1,2,5,5,10,10,10)
+urn.model(tickets)
+```
+b)
+```{r}
+y_bar<-replicate(25,urn.model(tickets))
+y_bar
+qqnorm(y_bar)
+```
+Looks like the plot follows similar to straight trend except for the outliers. so it might be from the normal distribution.

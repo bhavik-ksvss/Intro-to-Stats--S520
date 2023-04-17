@@ -1,0 +1,187 @@
+---
+title: "stats_problemset10"
+author: "Bhavik Kollipara"
+date: "11/17/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+### Question1. Horse's Starting point.
+
+```{r}
+wins_observed <- c(29,19,18,25,17,10,15,11)
+wins_observed
+```
+
+```{r}
+wins_expected <- c(18,18,18,18,18,18,18,18)
+
+wins_expected
+```
+chi-square test based on the NUll hypothesis that a horse's starting point doesn't effect the chances of winning the game.
+
+```{r}
+X2 <- sum((wins_observed-wins_expected)^2/wins_expected)
+X2
+```
+
+P-value.
+```{r}
+1-pchisq(X2,df=7)
+```
+
+As the P-value is very low, the data is not consistent with the null hypothesis.Thus we have some evidence that the horse's starting point does effect the winning of the game.
+
+### Question2. M&M's Milk chocolate candies.
+
+```{r}
+expected_props <- c(0.13,0.14,0.13,0.24,0.20,0.16)
+expected_props
+```
+Based on the observantions at the college of William and Mary,
+
+```{r}
+N <- 121+84+118+226+226+123
+N
+
+observed_props <- c(121/N,84/N,118/N,226/N,226/N,123/N)
+observed_props
+```
+ Chi-square test
+ 
+```{r}
+ X2 <- sum((observed_props-expected_props)^2/expected_props)
+X2
+```
+ P-value
+ 
+```{r}
+ 1-pchisq(X2,df=5)
+```
+As the p-value is very high and based on this we can say, the data is consistent with the null hypothesis and thus it adds evidence of the claim made by the The Mars Company.
+
+### Question 3. The Researcher's color algorithm
+
+```{r}
+observed_values <-c(30, 93, 159, 184, 195, 171, 92, 45, 31)
+observed_values
+```
+
+```{r}
+prob<-c(sum(dbinom(0:1,16,0.29)),dbinom(2:8,16,0.29),sum(dbinom(9:16,16,0.29)))
+
+expected_value <- 1000*prob
+
+expected_value
+```
+
+chi-square test
+
+```{r}
+X2 <- sum((observed_values-expected_value)^2/expected_value)
+X2
+```
+
+P-value
+```{r}
+1-pchisq(X2,df=8)
+```
+
+As the p-value is considerably big, we can say the data is consistent with null hypothesis and it also adds evidence that there is no doubt that the researcher's colouring worked as intended.
+
+### Question 4. Panaminan Sand Flies.
+
+*Observed counts*
+*---------------------*
+       3ft 5ft Total
+Male   173 125 298
+Female 150 73 223
+total  323 198 521
+*---------------------*
+
+Null : Sex doesn't vary as the height above ground.
+
+P(X=i,Y=j)= P(X=i)*P(Y=j) Independent
+
+Expected.
+
+expected_num= NP(X=i)P(Y=j)
+
+*expected counts.*
+*---------------------*
+              3ft                      5ft 
+Male   521(298/521)(323/521) 521(298/521)(198/521)
+Female 521(223/521)(323/521) 521(223/521)(198/521)
+*---------------------*
+
+```{r}
+observed_Values<-c(173,125,150,73)
+expected_Values<-c(521*(298/521)*(323/521) ,521*(298/521)*(198/521) ,521*(223/521)*(323/521) , 521*(223
+/521)*(198/521))
+
+observed_Values
+expected_Values
+```
+
+chi-square test
+
+```{r}
+X2 <- sum((observed_Values-expected_Values)^2/expected_Values)
+X2
+```
+
+P-value, df=
+```{r}
+1-pchisq(X2,df=1)
+```
+
+As the p-value is very small, the data is inconsistent with the null hypothesis.Thus , there is enough evidence that sex does vary as the height above ground in Panaminan flies.
+
+### Question 5. Study of Hodgkin's disease.
+
+LP NS MC LD Positive 74 68 154 18 Partial 18 16 54 10 None 12 12 58 44 Total 314 98 126
+
+Null : patient’s response to treatment for Hodgkin’s disease is independent of histological type
+
+P(X=i,Y=j) = P(x=i)*P(Y=j)
+
+expected number = NP(X=i)P(Y=j)
+
+Expected Data:
+```{r}
+observed<- c(74,18,12,68,16,12,154,54,58,18,10,44)
+N<- sum(observed)
+P_LP<- (74+18+12)/N
+P_NS<- (68+16+12)/N
+P_MC<- (154+54+58)/N
+P_LD<-(18+10+44)/N
+P_Positive<- (74+68+154+18)/N
+P_Partial<- (18+16+54+10)/N
+P_None<- (12+12+58+44)/N
+expected<- c(P_LP*P_Positive*N,P_LP*P_Partial*N,P_LP*P_None*N,
+ P_NS*P_Positive*N,P_NS*P_Partial*N,P_NS*P_None*N,
+ P_MC*P_Positive*N,P_MC*P_Partial*N,P_MC*P_None*N,
+ P_LD*P_Positive*N,P_LD*P_Partial*N,P_LD*P_None*N)
+
+expected
+
+```
+
+chi-square test
+
+```{r}
+X2 <- sum((observed-expected)^2/expected)
+X2
+```
+
+P-value
+
+```{r}
+1-pchisq(X2,df=6)
+```
+
+As the p-value is very small, the data is inconsistent with the null hypothesis. so there isn't evidence that the patient's response is independent of the histological data.

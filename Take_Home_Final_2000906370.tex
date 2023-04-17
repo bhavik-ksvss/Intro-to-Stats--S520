@@ -1,0 +1,397 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Take\_Home\_Final\_Sai\_Giridhar},
+  pdfauthor={Sai Giridhar Rao Allada},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{Take\_Home\_Final\_Sai\_Giridhar}
+\author{Sai Giridhar Rao Allada}
+\date{12/16/2021}
+
+\begin{document}
+\maketitle
+
+\hypertarget{q1}{%
+\section{Q1}\label{q1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{IPLpoints }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"IPLpoints.csv"}\NormalTok{)}
+\NormalTok{IPLpoints2 }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"IPLpoints2.csv"}\NormalTok{)}
+\FunctionTok{names}\NormalTok{(IPLpoints)[}\DecValTok{1}\NormalTok{]}\OtherTok{\textless{}{-}}\StringTok{\textquotesingle{}Year\textquotesingle{}}
+\NormalTok{IPL14 }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(IPLpoints, Year }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\DecValTok{2008}\SpecialCharTok{:}\DecValTok{2011}\NormalTok{, }\DecValTok{2014}\SpecialCharTok{:}\DecValTok{2021}\NormalTok{))}
+\NormalTok{p.win}\OtherTok{\textless{}{-}}\DecValTok{676}\SpecialCharTok{/}\DecValTok{1372}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{a}{%
+\subsection{a}\label{a}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{expected}\OtherTok{\textless{}{-}}\DecValTok{98} \SpecialCharTok{*} \FunctionTok{dbinom}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\DecValTok{14}\NormalTok{, }\DecValTok{14}\NormalTok{, p.win)}
+
+\NormalTok{actual\_expected}\OtherTok{\textless{}{-}}\FunctionTok{c}\NormalTok{(}\FunctionTok{sum}\NormalTok{(expected[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{]))}
+\NormalTok{actual\_expected}\OtherTok{\textless{}{-}}\FunctionTok{c}\NormalTok{(actual\_expected,expected[}\DecValTok{6}\SpecialCharTok{:}\DecValTok{10}\NormalTok{])}
+\NormalTok{actual\_expected}\OtherTok{\textless{}{-}}\FunctionTok{c}\NormalTok{(actual\_expected,}\FunctionTok{sum}\NormalTok{(expected[}\DecValTok{11}\SpecialCharTok{:}\DecValTok{15}\NormalTok{]))}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Expected wins for each category:"}\NormalTok{,actual\_expected)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Expected wins for each category: 9.70368 12.67504 18.46622 20.4978 17.42019 11.27974 7.957334
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{Verifying if the Sum of all wins is 98:"}\NormalTok{,}\FunctionTok{sum}\NormalTok{(actual\_expected))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Verifying if the Sum of all wins is 98: 98
+\end{verbatim}
+
+\hypertarget{b}{%
+\subsection{b}\label{b}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{possiblewins}\OtherTok{\textless{}{-}}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{6}\NormalTok{,}\DecValTok{7}\NormalTok{,}\DecValTok{8}\NormalTok{,}\DecValTok{9}\NormalTok{,}\DecValTok{10}\NormalTok{,}\DecValTok{11}\NormalTok{,}\DecValTok{12}\NormalTok{,}\DecValTok{13}\NormalTok{,}\DecValTok{14}\NormalTok{)}
+\NormalTok{observed}\OtherTok{\textless{}{-}}\FunctionTok{c}\NormalTok{()}
+\ControlFlowTok{for}\NormalTok{ (w }\ControlFlowTok{in}\NormalTok{ possiblewins)\{}
+\NormalTok{  observed}\OtherTok{\textless{}{-}}\FunctionTok{c}\NormalTok{(observed,}\FunctionTok{sum}\NormalTok{(IPL14}\SpecialCharTok{$}\NormalTok{Wins }\SpecialCharTok{==}\NormalTok{ w))}
+  \CommentTok{\#cat("\textbackslash{}n Observed wins if total wins is ",w,":",sum(IPL14$Wins == w))}
+\NormalTok{\}}
+\NormalTok{actual\_observed}\OtherTok{\textless{}{-}}\FunctionTok{c}\NormalTok{(}\FunctionTok{sum}\NormalTok{(observed[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{]))}
+\NormalTok{actual\_observed}\OtherTok{\textless{}{-}}\FunctionTok{c}\NormalTok{(actual\_observed,observed[}\DecValTok{6}\SpecialCharTok{:}\DecValTok{10}\NormalTok{])}
+\NormalTok{actual\_observed}\OtherTok{\textless{}{-}}\FunctionTok{c}\NormalTok{(actual\_observed,}\FunctionTok{sum}\NormalTok{(observed[}\DecValTok{11}\SpecialCharTok{:}\DecValTok{15}\NormalTok{]))}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Observed wins for each category:"}\NormalTok{,actual\_observed)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Observed wins for each category: 12 8 18 24 13 16 7
+\end{verbatim}
+
+\hypertarget{c}{%
+\subsection{c}\label{c}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{actual\_observed}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 12  8 18 24 13 16  7
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{X2 }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{((actual\_observed }\SpecialCharTok{{-}}\NormalTok{ actual\_expected)}\SpecialCharTok{\^{}}\DecValTok{2} \SpecialCharTok{/}\NormalTok{ actual\_expected)}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Pearson\textquotesingle{}s Chi Squared statistic:"}\NormalTok{, X2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Pearson's Chi Squared statistic: 6.089939
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"P{-}Value:"}\NormalTok{,}\DecValTok{1} \SpecialCharTok{{-}} \FunctionTok{pchisq}\NormalTok{(X2, }\AttributeTok{df=}\DecValTok{6}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## P-Value: 0.4131909
+\end{verbatim}
+
+\hypertarget{d}{%
+\subsection{d}\label{d}}
+
+The IPL is not completely random as there are strong teams and weak
+teams. The large pvalue confirms the null hypothesis but does not prove
+that the game is completely random. Some teams tend to perform better
+tha others.
+
+\hypertarget{q2}{%
+\section{Q2}\label{q2}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\NormalTok{temp}\OtherTok{=}\NormalTok{IPLpoints[IPLpoints}\SpecialCharTok{$}\NormalTok{NZCoach}\SpecialCharTok{==}\DecValTok{1}\NormalTok{,]}
+\NormalTok{temp}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     Year Team NZCoach Wins Losses NoResult Points AdjPoints
+## 1   2021  CSK       1    9      5        0     18    18.000
+## 3   2021  KKR       1    7      7        0     14    14.000
+## 6   2021  RCB       1    9      5        0     18    18.000
+## 9   2020  CSK       1    6      8        0     12    12.000
+## 11  2020  KKR       1    7      7        0     14    14.000
+## 17  2019  CSK       1    9      5        0     18    18.000
+## 25  2018  CSK       1    9      5        0     18    18.000
+## 30  2018  RCB       1    6      8        0     12    12.000
+## 38  2017  RCB       1    3     10        1      7     7.000
+## 39  2017  RPS       1    9      5        0     18    18.000
+## 46  2016  RCB       1    8      6        0     16    16.000
+## 47  2016  RPS       1    5      9        0     10    10.000
+## 49  2015  CSK       1    9      5        0     18    18.000
+## 54  2015  RCB       1    7      5        2     16    16.000
+## 57  2014  CSK       1    9      5        0     18    18.000
+## 60  2014   MI       1    7      7        0     14    14.000
+## 62  2014  RCB       1    5      9        0     10    10.000
+## 65  2013  CSK       1   11      5        0     22    19.250
+## 68  2013   MI       1   11      5        0     22    19.250
+## 74  2012  CSK       1    8      7        1     17    14.875
+## 83  2011  CSK       1    9      5        0     18    18.000
+## 93  2010  CSK       1    7      7        0     14    14.000
+## 101 2009  CSK       1    8      5        1     17    17.000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(temp, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{sample =}\NormalTok{ temp}\SpecialCharTok{$}\NormalTok{AdjPoints)) }\SpecialCharTok{+} \FunctionTok{stat\_qq}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{stat\_qq\_line}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Use of `temp$AdjPoints` is discouraged. Use `AdjPoints` instead.
+
+## Warning: Use of `temp$AdjPoints` is discouraged. Use `AdjPoints` instead.
+\end{verbatim}
+
+\includegraphics{Take_Home_Final_2000906370_files/figure-latex/unnamed-chunk-5-1.pdf}
+The points are not perfectly normal as seen in the above plot but are
+good enough to go ahead with hypothesis test.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{t.test}\NormalTok{(temp}\SpecialCharTok{$}\NormalTok{AdjPoints,}\AttributeTok{mu=}\DecValTok{14}\NormalTok{,}\AttributeTok{alternative =} \StringTok{"greater"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  One Sample t-test
+## 
+## data:  temp$AdjPoints
+## t = 1.9521, df = 22, p-value = 0.03188
+## alternative hypothesis: true mean is greater than 14
+## 95 percent confidence interval:
+##  14.16419      Inf
+## sample estimates:
+## mean of x 
+##  15.36413
+\end{verbatim}
+
+We perform a right tailed t-test to confirm our hypothesis that the
+Expected value of AdjPoints with a New Zealender coach to be greater
+than 14 hence why we consider the the null hypothesis to be less than or
+equal to 14. A low P-value of 0.03188 now proves that we can reject the
+null hypothesis. 95 \% confidence interval of \(\mu\) is
+{[}14.1619,Inf{]}.
+
+\hypertarget{q3}{%
+\section{Q3}\label{q3}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{IPLBig10 }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(IPLpoints, Team }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\StringTok{"CSK"}\NormalTok{, }\StringTok{"DC"}\NormalTok{, }\StringTok{"KKR"}\NormalTok{, }\StringTok{"HDC"}\NormalTok{, }\StringTok{"MI"}\NormalTok{,}
+\StringTok{"PBKS"}\NormalTok{, }\StringTok{"PWI"}\NormalTok{, }\StringTok{"RCB"}\NormalTok{, }\StringTok{"RR"}\NormalTok{, }\StringTok{"SRH"}\NormalTok{))}
+\NormalTok{iplm}\OtherTok{\textless{}{-}}\FunctionTok{lm}\NormalTok{(IPLBig10}\SpecialCharTok{$}\NormalTok{AdjPoints}\SpecialCharTok{\textasciitilde{}}\NormalTok{IPLBig10}\SpecialCharTok{$}\NormalTok{Team)}
+\FunctionTok{anova}\NormalTok{(iplm)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Response: IPLBig10$AdjPoints
+##                Df  Sum Sq Mean Sq F value   Pr(>F)   
+## IPLBig10$Team   9  348.61  38.734  2.8644 0.004743 **
+## Residuals     101 1365.81  13.523                    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+The analysis of variance tells us that the performance of the IPL teams
+are all not similar. Here we assume the null hypothesis to be that all
+the teams have similar AdjPoints and the alternative to be that they
+don't. We can reject the null hypothesis due to the really low p-value.
+The follow up analysis which could be done could include checking anova
+between different possible subsets of teams to distinguish the teams
+that are really good and those particularly aren't. \#\# Q4 We assume
+that the distribution is normal and is of a sufficient sample size in Q2
+in order to perform the t-test. In Q3 we assume that each sample is
+independent of the other which might not be the case exactly. The
+different samples of teams should also have the same variance of
+\(\sigma^2\). The sample isn't large enough either. \# Q5 \#\# a
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{IPL\_pred }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(IPLpoints2}\SpecialCharTok{$}\NormalTok{AdjPoints2}\SpecialCharTok{\textasciitilde{}}\NormalTok{IPLpoints2}\SpecialCharTok{$}\NormalTok{AdjPoints1)}
+\FunctionTok{summary}\NormalTok{(IPL\_pred)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = IPLpoints2$AdjPoints2 ~ IPLpoints2$AdjPoints1)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -9.3955 -2.0228  0.2144  2.7400  7.9772 
+## 
+## Coefficients:
+##                       Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)           12.36230    1.43457   8.617 1.12e-13 ***
+## IPLpoints2$AdjPoints1  0.11861    0.09811   1.209     0.23    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 3.783 on 99 degrees of freedom
+## Multiple R-squared:  0.01455,    Adjusted R-squared:  0.004595 
+## F-statistic: 1.462 on 1 and 99 DF,  p-value: 0.2296
+\end{verbatim}
+
+\$E{[}X{]}= slope \times AdjPointsIn2021 + Intercept \$ \textbackslash{}
+Hence \$E{[}SRH{]} = 0.11861 \times 6 + 12.36230 = \$
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pred}\OtherTok{=}\FloatTok{0.11861}\SpecialCharTok{*}\DecValTok{6} \SpecialCharTok{+}\FloatTok{12.3620}
+\NormalTok{pred}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 13.07366
+\end{verbatim}
+
+\hypertarget{b-1}{%
+\subsection{b}\label{b-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(broom)}
+\NormalTok{lmdf }\OtherTok{\textless{}{-}} \FunctionTok{augment}\NormalTok{(IPL\_pred)}
+\FunctionTok{ggplot}\NormalTok{(lmdf, }\FunctionTok{aes}\NormalTok{(IPLpoints2}\SpecialCharTok{$}\NormalTok{AdjPoints1, .resid)) }\SpecialCharTok{+} \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{geom\_smooth}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+\end{verbatim}
+
+\includegraphics{Take_Home_Final_2000906370_files/figure-latex/unnamed-chunk-10-1.pdf}
+It is not linear as the line should be horizontal. Our datapoints arent
+exactly independent as one team's loss effect the other team's win.
+
+\end{document}

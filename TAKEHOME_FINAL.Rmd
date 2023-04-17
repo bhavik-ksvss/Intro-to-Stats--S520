@@ -1,0 +1,283 @@
+---
+title: "Takehome_Final"
+author: "Bhavik Kollipara"
+date: "12/16/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**The Indian Premier League.**
+
+### QUESTION 1
+
+#Get the Data
+```{r}
+IPLpoints<- read.csv('IPLpoints.csv')
+IPLpoints2<- read.csv('IPLpoints2.csv')
+
+head(IPLpoints)
+head(IPLpoints2)
+```
+
+```{r}
+IPL14 <- subset(IPLpoints, Year %in% c(2008:2011, 2014:2021))
+
+IPL14
+```
+
+**a)** Expected number of wins for each category, 0-4,5,6,7,8,9,10 or more.
+```{r}
+p <- 676/1372
+
+probs_all<- c(sum(dbinom(0:4,14,p)),dbinom(5:9,14,p),sum(dbinom(10:14,14,p)))
+
+probs_all
+
+expected_wins<- 98 * probs_all
+
+expected_wins
+
+sum(expected_wins)
+```
+
+**b)** Observed number of wins for each category.
+
+```{r}
+
+
+wins_0_4 <- sum(IPL14$Wins<5)
+
+wins_0_4
+
+wins_5 <- sum(IPL14$Wins==5)
+
+wins_5
+
+wins_6 <- sum(IPL14$Wins==6)
+
+wins_6
+
+wins_7 <- sum(IPL14$Wins==7)
+
+wins_7
+
+wins_8 <- sum(IPL14$Wins==8)
+
+wins_8
+
+wins_9 <- sum(IPL14$Wins==9)
+
+wins_9
+
+wins_10_14 <- sum(IPL14$Wins>=10)
+
+wins_10_14
+
+observed_wins<- c(wins_0_4,wins_5,wins_6,wins_7,wins_8,wins_9,wins_10_14)
+
+observed_wins
+
+```
+
+**c)** Chi-squared statistic
+
+```{r}
+X2<- sum((observed_wins-expected_wins)**2/expected_wins)
+X2
+#degrees of freedom is equal to number of expected-1 (k-1)
+p=1-pchisq(X2,df=6)
+p
+```
+
+**d)** Explain to aging New Zealander
+
+*As the p-value is greater than 0.05(0.413) which is not small and large sample, we see the data is consistent with the null hypothesis. Hence, we can't reject the Null Hypothesis.Also this doesn't mean the IPL is completely random,as there are many other factors that would affect the distribution of the wins like the form of the player etc.. which would in-turn affect the performance of the players subsequently.
+
+### QUESTION 2 
+*Let's perform the test to check if the average adj points by NZ coaches is greater than 14.
+
+**HO: mu=14, H1: mu>14 (Right-Tailed Test)**
+
+```{r}
+Sample_size <-sum(IPLpoints$NZCoach==1)
+Sample_size
+```
+
+*As the sample size here is 23, which is less, we'll perform t-test.
+```{r}
+
+AdjPoints_NZ<- IPLpoints$AdjPoints[IPLpoints$NZCoach == 1]
+
+mu <-mean(AdjPoints_NZ)
+mu
+
+SD <-sd(AdjPoints_NZ)
+SD
+
+n<-length(AdjPoints_NZ)
+n
+
+t.stat<-(mu - 14)/(SD/sqrt(n))
+t.stat
+
+df<-length(AdjPoints_NZ)-1
+df
+
+p=1-pt(t.stat,df=df)
+p
+
+```
+**As the p-value(0.031) is very small and small sample, we can see the data is inconsistent with the null hypothesis(HO). Thus, we have strong evidence supporting that the average adj points by NZ coaches is greater than 14.**
+
+*As the t-test assumes normality, let's check the normality using QQplot.
+```{r}
+qqnorm(AdjPoints_NZ)
+
+qqnorm(sqrt(AdjPoints_NZ))
+
+qqnorm(log(AdjPoints_NZ))
+```
+
+
+**From the above QQplots, even after applying transformations the data seems to be sampled from approximately normal.**
+
+*From the above, we have rejected the null hypothesis. Let's find the CI of 95% for mu.
+
+```{r}
+n<-length(AdjPoints_NZ)
+
+q<-qt(0.975,df=n-1) 
+
+xbar<- mean(AdjPoints_NZ)
+
+sd<- sd(AdjPoints_NZ)
+
+#Lower Limit
+xbar- (q*sd/sqrt(n))
+#Upper Limit
+xbar + (q*sd/sqrt(n))
+
+```
+**The 95% CI Interval of mu is (13.91,16.81).**
+ 
+ 
+### QUESTION 3
+
+#Get Data
+
+```{r}
+IPLBig10 <- subset(IPLpoints, Team %in% c("CSK", "DC", "KKR", "HDC", "MI",
+"PBKS", "PWI", "RCB", "RR", "SRH"))
+
+head(IPLBig10)
+```
+##Perform ANOVA.
+* Taking AdjPoints as numeric value and Team as the response value.
+```{r}
+anova(lm(AdjPoints ~ Team, data = IPLBig10))
+```
+*The ANOVA test is used to determine whether or not different Independent groups have different means.
+
+*(H0): mu of all AdjPoints of different teams is same
+
+*(H1): mu of all AdjPoints of different teams are NOT equal
+
+**Here, the p-value(0.004743) is very small and F-value is also greater than 2. Hence , we can say the data is inconsistent with the Null Hypothesis and can reject it. It gives evidence that mu of all adjpoints of all teams are not equal.**
+
+*We cannot say which teams have equal and which doesn't have equal mu. So we perform pair-wise welch's test.
+
+### QUESTION 4
+* The samples should be drawn from normal distribution.
+* All the samples drawn are considered to be IID samples.
+* But the IID sample assumption is violated because if one team wins, other team losses.
+
+### QUESTION 5
+
+Regression Line to predict AdjPoints2 using the AdjPoints1
+```{r}
+srh.lm <- lm(IPLpoints2$AdjPoints2 ~ IPLpoints2$AdjPoints1, data = IPLpoints2)
+srh.lm
+```
+```{r}
+summary(srh.lm)
+```
+* The least squares regression gives us prediction is equals to 12.36 + 0.1186*(AdjPoints1).
+
+* For the year 2022, **Prediction for SRH**
+```{r}
+#12.36 + 0.1186 * (AdjPoints1)
+
+srh_predicted_points <-12.36 + 0.1186 * 6
+srh_predicted_points
+```
+**So,the predicted points for SRH in 2022 is 13. Which is closer to the 14 as predicted by Kane.**
+
+**Here, the Multiple R-squared value is ~1.4% which is very less data variance, which in-turn means the error has more variance results in the Poor Predictability of the model.**
+
+We can also check the correlation here.
+```{r}
+ cor(IPLpoints2$AdjPoints1,IPLpoints2$AdjPoints2)
+```
+
+
+
+**From the above, r value is also very less which mean the low correlation adds evidence to the poor predictabilty of the model.**
+
+*Let's check the assumptions of Linear regression are met or not.
+
+**1. Linearity**
+
+```{r}
+library(ggplot2)
+
+ggplot(IPLpoints2, aes(x =AdjPoints1, y =AdjPoints2)) + geom_point() +geom_smooth()
+
+```
+```{r}
+library(broom)
+srh.lm.df <- augment(srh.lm)
+srh.lm.df
+```
+
+
+```{r}
+ggplot(srh.lm.df, aes(x = IPLpoints2$AdjPoints1, y = .resid)) + geom_point() + geom_smooth()
+
+```
+
+
+
+**From the above plot, the line is not even closer to linear, the smoother is not horizontal. hence, Non-Linear,It might be because of small sample size.**
+
+**2. Independence**
+
+Mostly the Independence here is not satisfied because if one team wins, other losses as discussed above.so we can here conclude, there is no independence of the errors.
+
+**3. Equal variance of errors**
+
+```{r}
+library(broom)
+srh.lm.df <- augment(srh.lm)
+srh.lm.df
+```
+
+```{r}
+ggplot(srh.lm.df, aes(x = IPLpoints2$AdjPoints1, y = .resid)) + geom_point() + geom_smooth()
+
+```
+
+
+**At extreme points there is lot varaince, also across all the points hence the homoskedacity is violated**
+
+**4. Normality**
+
+```{r}
+ggplot(srh.lm.df,aes(sample=.resid))+ stat_qq()
+
+```
+
+
+**From the above plots of residuals they are approximately normal.**

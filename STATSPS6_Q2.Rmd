@@ -1,0 +1,95 @@
+---
+title: "Pulse Rates of Peruvian Indians"
+author: "Bhavik Kollipara"
+date: "10/13/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## The data
+https://mtrosset.pages.iu.edu/ StatInfeR/Data/pulses.dat
+
+The data set can be scanned in from the web:
+
+```{r}
+pulses.rate <- scan("https://mtrosset.pages.iu.edu/StatInfeR/Data/pulses.dat")
+```
+
+
+```{r}
+library(ggplot2)
+
+```
+
+
+```{r}
+pulses.df <- data.frame(Rate =pulses.rate)
+```
+
+a) Graph the e-cdf
+```{r}
+ggplot(pulses.df, aes(Rate)) + stat_ecdf(geom = "step") + ylab("Ecdf")
+```
+
+b) plug-in estimates of population mean and variance
+```{r}
+len= length(pulses.df$Rate)
+# Plug-in 
+sum(pulses.df$Rate)/len
+```
+```{r}
+#plugin
+v=sqrt(mean(pulses.df$Rate^2) - mean(pulses.df$Rate)^2)
+v
+```
+
+```{r}
+#sample
+mean(pulses.df$Rate)
+sd(pulses.df$Rate)
+```
+c) plug-in estimates of median and IQR
+```{r}
+#plugin median
+r_sort <- sort(pulses.df$Rate)
+r_sort[as.integer(len/2)]
+
+#plugin IQR
+r_25q<- r_sort[as.integer(len/4)]
+r_75q<- r_sort[as.integer(3*len/4)]
+
+IQR <-r_75q - r_25q
+IQR
+
+```
+
+d) Ratio of plug-in estimate of IQR to sqrt of plug in estimate of variance
+```{r}
+IQR/sqrt(v)
+```
+
+e) Box Plot
+```{r}
+ggplot(pulses.df, aes(y=Rate)) + geom_boxplot()
+```
+
+f) Normal probability plot
+```{r}
+qqnorm(pulses.df$Rate)
+```
+
+g) Kernel Density Plot
+```{r}
+ggplot(pulses.df, aes(x= Rate)) +geom_density()
+```
+
+h)Normal Distribution (Yes or Not ?)
+```{r}
+
+ggplot(pulses.df, aes(sample = Rate)) + stat_qq()
+```
+Looks like the distribution doesn't follow Normal Distribution as the data in the sample doesn't have a straight trend across the origin.
+
